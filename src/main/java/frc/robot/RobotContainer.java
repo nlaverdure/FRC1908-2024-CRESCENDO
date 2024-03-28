@@ -64,7 +64,6 @@ import com.pathplanner.lib.commands.*;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.auto.*;
 
-import java.io.File;
 import java.util.List;
 
 /*
@@ -91,9 +90,7 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   Joystick m_driverJoystick = new Joystick(1);
   Joystick m_assistJoystick = new Joystick(2);
-  private final SendableChooser<String> autoSelector = new SendableChooser();
-  private File[] autoList;
-  private File autoDirectory = new File(Filesystem.getDeployDirectory(), "pathplanner\\autos");
+  private SendableChooser<Command> autoSelector = new SendableChooser();
 
   // The controller buttons being declared, can be used for setting different buttons to certain commands and/or functions
   //XBOX CONTROLLER IDENTIFICATION
@@ -137,16 +134,7 @@ public class RobotContainer {
     configureButtonBindings();
     
     //Autonomous options
-    autoList = autoDirectory.listFiles();
-    for(int i = 0; i < autoList.length; i++) {
-      if(autoList[i].isFile()) {
-        String autoName = autoList[i].getName().split(".")[0];
-        autoSelector.addOption(autoName, autoName);
-      }
-    }
-
-
-    SmartDashboard.putData("Auto Mode", autoSelector);
+    autoSelector = AutoBuilder.buildAutoChooser();
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(commands.defaultDriveCommand(m_robotDrive, m_driverJoystick, m_driverController));
@@ -368,21 +356,21 @@ public void checkFieldColor() {
     InstantCommand setGyroRegular = new InstantCommand(() -> m_robotDrive.setHeading(0));
     // Run path following command, then stop at the end.
 
-    String selectedAuto = autoSelector.getSelected();
-    switch(selectedAuto){
-      case "Amp on Left":
-        return setGyroLeft
-          .andThen(shoot())
-          .andThen(new WaitCommand(8))
-          .andThen(swerveControllerCommand1);
-          // .andThen(setGyroRegular);
-      case "Amp on Right":
-        return setGyroRight
-          .andThen(shoot())
-          .andThen(new WaitCommand(8))
-          .andThen(swerveControllerCommand1);
-          // .andThen(setGyroRegular);
-    }
+    // String selectedAuto = autoSelector.getSelected();
+    // switch(selectedAuto){
+    //   case "Amp on Left":
+    //     return setGyroLeft
+    //       .andThen(shoot())
+    //       .andThen(new WaitCommand(8))
+    //       .andThen(swerveControllerCommand1);
+    //       // .andThen(setGyroRegular);
+    //   case "Amp on Right":
+    //     return setGyroRight
+    //       .andThen(shoot())
+    //       .andThen(new WaitCommand(8))
+    //       .andThen(swerveControllerCommand1);
+    //       // .andThen(setGyroRegular);
+    // }
     return swerveControllerCommand1.andThen(shoot()).andThen();
   }
 
