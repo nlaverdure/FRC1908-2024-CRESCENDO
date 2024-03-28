@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MiddleNoteAuto"
+            "pathName": "MidNoteAuto"
           }
         },
         {
@@ -77,7 +77,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "EscapeFromSpeakerArea"
+            "pathName": "MidEscapeFromSpeakerArea"
           }
         }
       ]

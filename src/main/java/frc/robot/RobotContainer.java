@@ -254,7 +254,7 @@ public class RobotContainer {
             .andThen(
               new FunctionalCommand(
                 () -> {},
-                () -> {m_ShootingSubsystem.throttledShooting(0.3);}, 
+                () -> {m_ShootingSubsystem.throttledShooting(0.45);}, 
                 (x) -> {{m_LiftSubsystem.liftToNormalHeight();
                         m_LiftSubsystem.timerStop();
                         m_ShootingSubsystem.stop();}
@@ -318,8 +318,8 @@ public void checkFieldColor() {
     // Create config for trajectory
     m_robotDrive.zeroHeading();
     //m_robotDrive.resetOdometry(PathPlannerPath.fromPathFile("Copy of 2NoteMid").getPreviewStartingHolonomicPose());
-    return autoSelector.getSelected();
     //return new PathPlannerAuto("4NoteAutoAll");
+    return autoSelector.getSelected();
   }
 
   public Command ignoredAutonomous() {
