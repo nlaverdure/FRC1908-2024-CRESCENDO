@@ -327,7 +327,7 @@ public void checkFieldColor() {
     // Create config for trajectory
     m_robotDrive.zeroHeading();
     //m_robotDrive.resetOdometry(PathPlannerPath.fromPathFile("Copy of 2NoteMid").getPreviewStartingHolonomicPose());
-    return new PathPlannerAuto("4NoteAutoAll");
+    return new PathPlannerAuto("3NoteAutoMidRight");
   }
 
   public Command ignoredAutonomous() {
