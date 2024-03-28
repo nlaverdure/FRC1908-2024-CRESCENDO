@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MiddleNoteAuto"
+            "pathName": "MidNoteAuto"
           }
         },
         {
@@ -58,7 +58,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightNoteAuto"
+            "pathName": "MidRightNoteAuto"
           }
         },
         {
@@ -83,7 +83,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftNoteAuto"
+            "pathName": "MidLeftNoteAuto"
           }
         },
         {
@@ -108,7 +108,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "EscapeFromSpeakerArea"
+            "pathName": "MidEscapeFromSpeakerArea"
           }
         }
       ]
