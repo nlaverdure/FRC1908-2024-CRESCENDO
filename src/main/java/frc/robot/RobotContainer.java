@@ -135,6 +135,7 @@ public class RobotContainer {
     
     //Autonomous options
     autoSelector = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoSelector);
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(commands.defaultDriveCommand(m_robotDrive, m_driverJoystick, m_driverController));
@@ -317,7 +318,8 @@ public void checkFieldColor() {
     // Create config for trajectory
     m_robotDrive.zeroHeading();
     //m_robotDrive.resetOdometry(PathPlannerPath.fromPathFile("Copy of 2NoteMid").getPreviewStartingHolonomicPose());
-    return new PathPlannerAuto("4NoteAutoAll");
+    return autoSelector.getSelected();
+    //return new PathPlannerAuto("4NoteAutoAll");
   }
 
   public Command ignoredAutonomous() {
