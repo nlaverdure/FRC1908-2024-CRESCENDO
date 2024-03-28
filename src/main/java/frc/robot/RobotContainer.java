@@ -63,7 +63,7 @@ import com.pathplanner.lib.commands.*;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.auto.*;
 
-
+import java.io.File;
 import java.util.List;
 
 /*
@@ -91,6 +91,8 @@ public class RobotContainer {
   Joystick m_driverJoystick = new Joystick(1);
   Joystick m_assistJoystick = new Joystick(2);
   private final SendableChooser<String> autoSelector = new SendableChooser();
+  private File[] autoList;
+  private File autoDirectory = new File("..\\..\\deploy\\pathplanner\\autos");
 
   // The controller buttons being declared, can be used for setting different buttons to certain commands and/or functions
   //XBOX CONTROLLER IDENTIFICATION
@@ -134,8 +136,13 @@ public class RobotContainer {
     configureButtonBindings();
     
     //Autonomous options
-    autoSelector.setDefaultOption("Amp on Left", "Amp on Left");
-    autoSelector.setDefaultOption("Amp on Right", "Amp on Right");
+    autoList = autoDirectory.listFiles();
+    for(int i = 0; i < autoList.length; i++) {
+      if(autoList[i].isFile()) {
+        String autoName = autoList[i].getName().split(".")[0];
+        autoSelector.addOption(autoName, autoName);
+      }
+    }
 
     SmartDashboard.putData("Auto Mode", autoSelector);
 
