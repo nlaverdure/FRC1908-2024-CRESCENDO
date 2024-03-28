@@ -56,13 +56,19 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "RightNoteAuto"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 2.0
                 }
               },
               {

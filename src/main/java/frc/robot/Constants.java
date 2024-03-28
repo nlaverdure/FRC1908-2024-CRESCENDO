@@ -71,12 +71,12 @@ public final class Constants {
       new PIDConstants(
         1.5, 
         0, 
-        0
+        1.5
       ), 
       new PIDConstants(
         1.5, 
         0, 
-        0
+        1.5
       ), 
       kMaxSpeedMetersPerSecond, 
       (new Translation2d(kTrackWidth, kWheelBase)).getNorm(), 
