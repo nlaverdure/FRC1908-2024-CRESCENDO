@@ -93,7 +93,7 @@ public class RobotContainer {
   Joystick m_assistJoystick = new Joystick(2);
   private final SendableChooser<String> autoSelector = new SendableChooser();
   private File[] autoList;
-  private File autoDirectory = new File(Filesystem.getDeployDirectory().getPath().concat("\\pathplanner\\autos"));
+  private File autoDirectory = new File(Filesystem.getDeployDirectory(), "pathplanner\\autos");
 
   // The controller buttons being declared, can be used for setting different buttons to certain commands and/or functions
   //XBOX CONTROLLER IDENTIFICATION
