@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -92,7 +93,7 @@ public class RobotContainer {
   Joystick m_assistJoystick = new Joystick(2);
   private final SendableChooser<String> autoSelector = new SendableChooser();
   private File[] autoList;
-  private File autoDirectory = new File("..\\..\\deploy\\pathplanner\\autos");
+  private File autoDirectory = new File(Filesystem.getDeployDirectory().getPath().concat("\\pathplanner\\autos"));
 
   // The controller buttons being declared, can be used for setting different buttons to certain commands and/or functions
   //XBOX CONTROLLER IDENTIFICATION
@@ -143,6 +144,7 @@ public class RobotContainer {
         autoSelector.addOption(autoName, autoName);
       }
     }
+
 
     SmartDashboard.putData("Auto Mode", autoSelector);
 
@@ -327,7 +329,7 @@ public void checkFieldColor() {
     // Create config for trajectory
     m_robotDrive.zeroHeading();
     //m_robotDrive.resetOdometry(PathPlannerPath.fromPathFile("Copy of 2NoteMid").getPreviewStartingHolonomicPose());
-    return new PathPlannerAuto("3NoteAutoMidRight");
+    return new PathPlannerAuto("4NoteAutoAll");
   }
 
   public Command ignoredAutonomous() {
