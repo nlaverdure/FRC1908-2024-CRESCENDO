@@ -263,7 +263,12 @@ public class RobotContainer {
                 m_LiftSubsystem, m_ShootingSubsystem)
             )
           )
-        );
+          );
+          new JoystickButton(m_driverController, 7)
+            .whileTrue(new StartEndCommand(
+            () -> m_LiftSubsystem.liftToAmp(),
+            () -> m_LiftSubsystem.liftToNormalHeight()
+         ));
     // new JoystickButton(m_driverController, 7)
     //     .whileTrue(new RunCommand(
     //       () -> m_LiftSubsystem.liftersReset()

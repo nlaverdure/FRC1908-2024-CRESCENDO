@@ -70,13 +70,13 @@ public final class Constants {
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
       new PIDConstants(
         1.75, 
-        0, 
+        0.2, 
         0.2
       ), 
       new PIDConstants(
-        1.75, 
-        0, 
-        0.5
+        1.5, 
+        0.05, 
+        0.1
       ), 
       kMaxSpeedMetersPerSecond, 
       (new Translation2d(kTrackWidth, kWheelBase)).getNorm(), 
