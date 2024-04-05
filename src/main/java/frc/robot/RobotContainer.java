@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import frc.utils.ControllerPatroller;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.MathUtil;
@@ -46,6 +47,7 @@ import frc.robot.subsystems.ShootingSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.utils.JoystickAnalogButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -87,9 +89,8 @@ public class RobotContainer {
   //command container class
   CommandsContainer commands = new CommandsContainer();
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  Joystick m_driverJoystick = new Joystick(1);
-  Joystick m_assistJoystick = new Joystick(2);
+  Joystick m_driverController;
+  XboxController m_operatorController;
   private SendableChooser<Command> autoSelector = new SendableChooser();
 
   // The controller buttons being declared, can be used for setting different buttons to certain commands and/or functions
@@ -105,23 +106,26 @@ public class RobotContainer {
     Trigger back = new JoystickButton(m_driverController, XboxController.Button.kBack.value);
     
   //RADIOMASTER ZORRO CONTROLLER IDENTIFICATION
-    Trigger leftBumperPush = new JoystickButton(m_driverJoystick, 1);
-    Trigger rightBumperPush = new JoystickButton(m_driverJoystick, 2);
-    Trigger leftBackPush = new JoystickButton(m_driverJoystick, 3);
-    Trigger rightBackPush = new JoystickButton(m_driverJoystick, 4);
-    Trigger leftPot = new JoystickButton(m_driverJoystick, 5);
-    Trigger rightPot = new JoystickButton(m_driverJoystick, 6);
-    Trigger axisButton1 = new JoystickButton(m_driverJoystick, 7);
+    // Trigger leftBumperPush = new JoystickButton(m_driverJoystick, 1);
+    // Trigger rightBumperPush = new JoystickButton(m_driverJoystick, 2);
+    // Trigger leftBackPush = new JoystickButton(m_driverJoystick, 3);
+    // Trigger rightBackPush = new JoystickButton(m_driverJoystick, 4);
+    // Trigger leftPot = new JoystickButton(m_driverJoystick, 5);
+    // Trigger rightPot = new JoystickButton(m_driverJoystick, 6);
+    // Trigger axisButton1 = new JoystickButton(m_driverJoystick, 7);
     NetworkTable FMS = NetworkTableInstance.getDefault().getTable("FMSInfo");
-    Trigger switch1 = new Trigger((() -> m_driverJoystick.getRawAxis(5) > 0.5));
-    Trigger button10 = new Trigger((() -> m_driverJoystick.getRawAxis(6) > 0.5));
-    Trigger testButton5 = new Trigger((() -> m_driverJoystick.getRawAxis(4) > 0.5));
+    // Trigger switch1 = new Trigger((() -> m_driverJoystick.getRawAxis(5) > 0.5));
+    // Trigger button10 = new Trigger((() -> m_driverJoystick.getRawAxis(6) > 0.5));
+    // Trigger testButton5 = new Trigger((() -> m_driverJoystick.getRawAxis(4) > 0.5));
 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    configureButtonBindings();
+
     m_LedSubsystem = new LEDSubsystem(FMS, m_IntakeSubsystem);
     m_vision = new VisionSubsystem(m_robotDrive);
 
@@ -138,7 +142,7 @@ public class RobotContainer {
     SmartDashboard.putData(autoSelector);
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(commands.defaultDriveCommand(m_robotDrive, m_driverJoystick, m_driverController));
+    m_robotDrive.setDefaultCommand(commands.defaultDriveCommand(m_robotDrive, m_driverController, m_operatorController));
     // m_LiftSubsystem.setDefaultCommand(new RunCommand(
     //   () -> {
     //     if(m_driverController.getPOV() == 0) {
@@ -197,7 +201,21 @@ public class RobotContainer {
    * passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {
+  public void configureButtonBindings() {
+
+    // Clear any active buttons.
+    CommandScheduler.getInstance().getActiveButtonLoop().clear();
+
+    ControllerPatroller controllerPatroller = ControllerPatroller.getInstance();
+
+    // We use two different types of controllers - Joystick & XboxController.
+    // Create objects of the specific types.
+    m_driverController = new Joystick(controllerPatroller.findDriverPort());
+    m_operatorController = new XboxController(controllerPatroller.findOperatorPort());
+    
+    configureDriverButtonBindings();
+    configureOperatorButtonBindings();
+
     new JoystickButton(m_driverController, 3) 
         .whileTrue(new RunCommand(
             () -> m_robotDrive.zeroHeading(),
@@ -209,9 +227,9 @@ public class RobotContainer {
     //      m_LiftSubsystem));
 
     new JoystickButton(m_driverController, 0);
-    new JoystickButton(m_driverJoystick, 2)
+    new JoystickButton(m_operatorController, 2)
       .onTrue(shoot());
-    new JoystickButton(m_driverJoystick, 1)
+    new JoystickButton(m_operatorController, 1)
         .whileTrue(new FunctionalCommand(
           () ->{},
           () -> m_IntakeSubsystem.noteIntake(),
@@ -223,7 +241,7 @@ public class RobotContainer {
     //     .whileTrue(new InstantCommand(
     //       () -> {m_CommandsContainer.fieldRelative = false;}
     //       ));
-    new JoystickButton(m_driverJoystick, 3)
+    new JoystickButton(m_operatorController, 3)
         .whileTrue(new StartEndCommand(
           () -> m_IntakeSubsystem.noteUntake(),
           () -> m_IntakeSubsystem.intakeStop(),
@@ -293,9 +311,13 @@ public class RobotContainer {
           m_ShootingSubsystem));
         }
     
+private void configureDriverButtonBindings() {
 
+}
 
-    
+private void configureOperatorButtonBindings() {
+  
+}  
 
     
     // new JoystickButton(m_driverJoystick, 7)

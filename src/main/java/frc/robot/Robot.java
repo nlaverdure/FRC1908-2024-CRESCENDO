@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.utils.ControllerPatroller;
+import frc.robot.Constants.OIConstants;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +21,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private final XboxController m_controller = new XboxController(0);
+  private int m_usb_check_delay = OIConstants.kUSBCheckNumLoops;
+
+  //private final XboxController m_controller = new XboxController(0);
   private RobotContainer m_robotContainer;
 
   /**
@@ -55,7 +59,22 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    // Scan the USB devices. If they change, remap the buttons.
+
+    /*
+     * Only check if controllers changed every kUSBCheckNumLoops loops of disablePeriodic().
+     * This prevents us from hammering on some routines that cause the RIO to lock up.
+     */
+    m_usb_check_delay--;
+    if (0 >= m_usb_check_delay) {
+      m_usb_check_delay = OIConstants.kUSBCheckNumLoops;
+      if (ControllerPatroller.getInstance().controllersChanged()) {
+        // Reset the joysticks & button mappings.
+        m_robotContainer.configureButtonBindings();
+      }
+    }
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override

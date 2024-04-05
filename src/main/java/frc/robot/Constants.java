@@ -136,7 +136,44 @@ public final class Constants {
   }
 
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kUSBCheckNumLoops = 40;
+
+    public static final String kXbox = "XBOX";
+    public static final String kPS4 = "P";
+    public static final String kRadioMaster = "TX16S";
+    public static final String kZorro = "Zorro";
+
+    public static final String[] kDriverControllerNames = new String[] {kZorro};
+    public static final String[] kOperatorControllerNames = new String[] {kXbox};
+
+    public static final int kDefaultDriverControllerPort = 1;
+    public static final int kDefaultOperatorControllerPort = 0;
+
+    // RadioMaster Zorro joystick axis
+    public static int kZorroLeftXAxis = 0;
+    public static int kZorroLeftYAxis = 1;
+    public static int kZorroLeftDial = 2;
+    public static int kZorroRightDial = 3;
+    public static int kZorroRightXAxis = 4;
+    public static int kZorroRightYAxis = 5;
+
+    // RadioMaster Zorro buttons
+    public static int kZorroBDown = 1;
+    public static int kZorroBMid = 2;
+    public static int kZorroBUp = 3;
+    public static int kZorroEDown = 4;
+    public static int kZorroEUp = 5;
+    public static int kZorroAIn = 6;
+    public static int kZorroGIn = 7;
+    public static int kZorroCDown = 8;
+    public static int kZorroCMid = 9;
+    public static int kZorroCUp = 10;
+    public static int kZorroFDown = 11;
+    public static int kZorroFUp = 12;
+    public static int kZorroDIn = 13;
+    public static int kZorroHIn = 14;
+
+    //public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.02;
   }
 
